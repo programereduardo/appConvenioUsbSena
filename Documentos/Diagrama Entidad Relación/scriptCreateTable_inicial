@@ -1,0 +1,233 @@
+-- MySQL Workbench Synchronization
+-- Generated: 2018-06-07 17:29
+-- Model: New Model
+-- Version: 1.0
+-- Project: Name of the project
+-- Author: SIIGO
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`competencias` (
+  `comp_id` INT(11) NOT NULL COMMENT 'El identificador unico de la tabla',
+  `comp_nombre` VARCHAR(45) NOT NULL COMMENT 'Este campo va el nombre de la competencia',
+  `comp_estado` ENUM('A', '*') NOT NULL COMMENT 'En este campo va el estado de la competencia',
+  PRIMARY KEY (`comp_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`resultados` (
+  `resu_id` INT(11) NOT NULL COMMENT 'El identificador unico de la tabla',
+  `comp_id` INT(11) NOT NULL COMMENT 'esta es la FK de la tabla competencia',
+  `resu_nombre` VARCHAR(45) NOT NULL COMMENT 'Este campo va el nombre de los resultados',
+  `resu_estado` ENUM('A', '*') NOT NULL COMMENT 'En este campo va el estado de los resultados',
+  PRIMARY KEY (`resu_id`, `comp_id`),
+  INDEX `fk_resultados_competencias1_idx` (`comp_id` ASC),
+  CONSTRAINT `fk_resultados_competencias1`
+    FOREIGN KEY (`comp_id`)
+    REFERENCES `conveniosenausb`.`competencias` (`comp_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`centrosformativos` (
+  `cent_id` INT(11) NOT NULL COMMENT 'El identificador unico de la tabla',
+  `cent_nombre` VARCHAR(45) NOT NULL COMMENT 'Este campo va el nombre del centro de formacion',
+  `cent_estado` ENUM('A', '*') NOT NULL COMMENT 'Este campo va el estado del centro',
+  PRIMARY KEY (`cent_id`),
+  UNIQUE INDEX `cent_nombre_UNIQUE` (`cent_nombre` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`programas` (
+  `prog_id` INT(11) NOT NULL COMMENT 'El identificador unico de la tabla',
+  `cent_id` INT(11) NOT NULL COMMENT 'Esta es la FK de la tabla de centros de formacion',
+  `prog_nombres` VARCHAR(45) NOT NULL COMMENT 'Este campo va el nombre del  los programas',
+  `prog_estado` ENUM('A', '*') NOT NULL COMMENT 'En este campo va el estado del programa',
+  PRIMARY KEY (`prog_id`),
+  INDEX `fk_programas_centrosformativos1_idx` (`cent_id` ASC),
+  UNIQUE INDEX `prog_nombres_UNIQUE` (`prog_nombres` ASC),
+  CONSTRAINT `fk_programas_centrosformativos1`
+    FOREIGN KEY (`cent_id`)
+    REFERENCES `conveniosenausb`.`centrosformativos` (`cent_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`fichas` (
+  `ficha_id` VARCHAR(15) NOT NULL COMMENT 'El identificador unico de la tabla',
+  `ficha_nombre` VARCHAR(45) NULL DEFAULT NULL COMMENT 'Este campo va el nombre del programa',
+  `prog_id` INT(11) NOT NULL COMMENT 'Esta es la FK de la tabla de programas',
+  PRIMARY KEY (`ficha_id`),
+  INDEX `fk_fichas_programas1_idx` (`prog_id` ASC),
+  CONSTRAINT `fk_fichas_programas1`
+    FOREIGN KEY (`prog_id`)
+    REFERENCES `conveniosenausb`.`programas` (`prog_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`mallas` (
+  `malla_id` INT(11) NOT NULL COMMENT 'El identificador unico de la tabla',
+  `prog_id` INT(11) NOT NULL COMMENT 'Esta es la FK de la tabla de programas',
+  `comp_id` INT(11) NOT NULL COMMENT 'Esta es la FK de la tabla de ',
+  `resu_id` INT(11) NOT NULL COMMENT 'Esta es la FK de la tabla de resultados',
+  `malla_perano` YEAR NOT NULL,
+  `malla_periodo` SMALLINT(1) NOT NULL COMMENT 'En este campo van los periodos de las mallas',
+  `malla_nombre` VARCHAR(45) NOT NULL COMMENT 'Este campo va el nombre del plan de estudio',
+  `malla_estado` ENUM('A', '*') NOT NULL COMMENT 'En este campo va el estado de las mallas',
+  PRIMARY KEY (`malla_id`, `prog_id`, `comp_id`, `resu_id`),
+  INDEX `fk_mallas_resultados1_idx` (`resu_id` ASC, `comp_id` ASC),
+  INDEX `fk_mallas_programas1_idx` (`prog_id` ASC),
+  CONSTRAINT `fk_mallas_resultados1`
+    FOREIGN KEY (`resu_id` , `comp_id`)
+    REFERENCES `conveniosenausb`.`resultados` (`resu_id` , `comp_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_mallas_programas1`
+    FOREIGN KEY (`prog_id`)
+    REFERENCES `conveniosenausb`.`programas` (`prog_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`notas` (
+  `not_perano` SMALLINT(4) NOT NULL,
+  `not_periodo` SMALLINT(1) NOT NULL,
+  `malla_id` INT(11) NOT NULL COMMENT 'Esta es la FK de la tabla de mallas',
+  `prog_id` INT(11) NOT NULL,
+  `ficha_id` VARCHAR(15) NOT NULL COMMENT 'Esta es la FK de la tabal de fichas',
+  `apre_id` INT(11) NOT NULL,
+  `comp_id` INT(11) NOT NULL,
+  `resu_id` INT(11) NOT NULL,
+  `nota` CHAR(1) NOT NULL COMMENT 'En este campo va las notas de los aprendices',
+  PRIMARY KEY (`not_perano`, `not_periodo`, `malla_id`, `prog_id`, `ficha_id`, `apre_id`, `comp_id`, `resu_id`),
+  INDEX `fk_notas_mallas1_idx` (`malla_id` ASC, `prog_id` ASC, `comp_id` ASC, `resu_id` ASC),
+  INDEX `fk_notas_fichas1_idx` (`ficha_id` ASC),
+  INDEX `fk_notas_aprendices1_idx` (`apre_id` ASC),
+  CONSTRAINT `fk_notas_mallas1`
+    FOREIGN KEY (`malla_id` , `prog_id` , `comp_id` , `resu_id`)
+    REFERENCES `conveniosenausb`.`mallas` (`malla_id` , `prog_id` , `comp_id` , `resu_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_notas_fichas1`
+    FOREIGN KEY (`ficha_id`)
+    REFERENCES `conveniosenausb`.`fichas` (`ficha_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_notas_aprendices1`
+    FOREIGN KEY (`apre_id`)
+    REFERENCES `conveniosenausb`.`aprendices` (`apre_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`carga_instructores` (
+  `carg_perano` YEAR NOT NULL COMMENT 'Este es el identificador unico d la tabla',
+  `carg_periodo` SMALLINT(1) NOT NULL,
+  `malla_id` INT(11) NOT NULL COMMENT 'Esta es la FK de la tabal de mallas',
+  `prog_id` INT(11) NOT NULL,
+  `ficha_id` VARCHAR(15) NOT NULL COMMENT 'Esta es la FK de la tabla de fichas',
+  `comp_id` INT(11) NOT NULL,
+  `resu_id` INT(11) NOT NULL,
+  `inst_id` INT(11) NOT NULL COMMENT 'Esta es la FK de la tabla instructores',
+  PRIMARY KEY (`carg_perano`, `carg_periodo`, `malla_id`, `prog_id`, `ficha_id`, `comp_id`, `resu_id`, `inst_id`),
+  INDEX `fk_carga_instructores_mallas1_idx` (`malla_id` ASC, `prog_id` ASC, `comp_id` ASC, `resu_id` ASC),
+  INDEX `fk_carga_instructores_fichas1_idx` (`ficha_id` ASC),
+  INDEX `fk_carga_instructores_instructores1_idx` (`inst_id` ASC),
+  CONSTRAINT `fk_carga_instructores_mallas1`
+    FOREIGN KEY (`malla_id` , `prog_id` , `comp_id` , `resu_id`)
+    REFERENCES `conveniosenausb`.`mallas` (`malla_id` , `prog_id` , `comp_id` , `resu_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_carga_instructores_fichas1`
+    FOREIGN KEY (`ficha_id`)
+    REFERENCES `conveniosenausb`.`fichas` (`ficha_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_carga_instructores_instructores1`
+    FOREIGN KEY (`inst_id`)
+    REFERENCES `conveniosenausb`.`instructores` (`inst_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`inasistencias` (
+  `inas_mes` SMALLINT(2) NOT NULL,
+  `inas_dia` SMALLINT(2) NOT NULL,
+  `not_perano` SMALLINT(4) NOT NULL,
+  `not_periodo` SMALLINT(1) NOT NULL,
+  `malla_id` INT(11) NOT NULL,
+  `prog_id` INT(11) NOT NULL,
+  `ficha_id` VARCHAR(15) NOT NULL,
+  `apre_id` INT(11) NOT NULL,
+  `comp_id` INT(11) NOT NULL,
+  `resu_id` INT(11) NOT NULL,
+  `inst_id` INT(11) NOT NULL,
+  PRIMARY KEY (`inas_mes`, `inas_dia`, `not_perano`, `not_periodo`, `malla_id`, `prog_id`, `ficha_id`, `apre_id`, `comp_id`, `resu_id`, `inst_id`),
+  INDEX `fk_inasistencias_notas1_idx` (`not_perano` ASC, `not_periodo` ASC, `malla_id` ASC, `prog_id` ASC, `ficha_id` ASC, `apre_id` ASC, `comp_id` ASC, `resu_id` ASC),
+  CONSTRAINT `fk_inasistencias_notas1`
+    FOREIGN KEY (`not_perano` , `not_periodo` , `malla_id` , `prog_id` , `ficha_id` , `apre_id` , `comp_id` , `resu_id`)
+    REFERENCES `conveniosenausb`.`notas` (`not_perano` , `not_periodo` , `malla_id` , `prog_id` , `ficha_id` , `apre_id` , `comp_id` , `resu_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`matriculas` (
+  `mat_id` INT(11) NOT NULL,
+  `mat_perano` SMALLINT(4) NULL DEFAULT NULL,
+  `mat_periodo` SMALLINT(1) NULL DEFAULT NULL,
+  `mat_programa` VARCHAR(45) NULL DEFAULT NULL,
+  `mat_ficha` VARCHAR(15) NULL DEFAULT NULL,
+  `apre_id` INT(11) NOT NULL,
+  PRIMARY KEY (`mat_id`),
+  INDEX `fk_matriculas_aprendices1_idx` (`apre_id` ASC),
+  CONSTRAINT `fk_matriculas_aprendices1`
+    FOREIGN KEY (`apre_id`)
+    REFERENCES `conveniosenausb`.`aprendices` (`apre_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`instructores` (
+  `inst_id` INT(11) NOT NULL COMMENT 'Es el indentificador inico de la tabla',
+  `inst_nombre` VARCHAR(45) NOT NULL COMMENT 'En este campo va el nombre del instructor',
+  `inst_apellidos` VARCHAR(45) NULL DEFAULT NULL COMMENT 'En este campo va los apellidos del instructor\n',
+  `inst_tipodocumento` ENUM('CC', 'CE') NOT NULL COMMENT 'tipo de documento del instructor',
+  `inst_documento` VARCHAR(20) NOT NULL COMMENT 'documento del instructor',
+  `inst_correo` VARCHAR(45) NULL DEFAULT NULL COMMENT 'correo del instructor',
+  `inst_telefono` VARCHAR(45) NULL DEFAULT NULL COMMENT 'telefono del instructor',
+  `inst_direccion` VARCHAR(40) NULL DEFAULT NULL COMMENT 'direccion del instructor',
+  `inst_fechadenacimiento` DATE NULL DEFAULT NULL COMMENT 'fecha de nacimiento del instructor',
+  PRIMARY KEY (`inst_id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `conveniosenausb`.`aprendices` (
+  `apre_id` INT(11) NOT NULL,
+  `apre_nombre` VARCHAR(45) NOT NULL COMMENT 'En este campo va el nombre del aprendiz',
+  `apre_apellido` VARCHAR(45) NULL DEFAULT NULL COMMENT 'En este campo va el apellido del aprendiz',
+  `apre_tipodocumento` ENUM('TI','CE','CC') NOT NULL COMMENT 'En este campo va el tipo de documento del aprendiz',
+  `apre_documento` VARCHAR(20) NOT NULL COMMENT 'En este campo va el numero de documento del aprendiz',
+  `apre_correo` VARCHAR(45) NULL DEFAULT NULL COMMENT 'En este campo va el correo del aprendiz',
+  `apre_telefono` INT(11) NULL DEFAULT NULL COMMENT 'En este campo va el numero del telefono del aprendiz',
+  `apre_direccion` VARCHAR(45) NULL DEFAULT NULL COMMENT 'En este campo va la direccion del aprendiz',
+  `apre_fechanacimiento` DATE NULL DEFAULT NULL COMMENT 'En este campo va la fecha de nacimiento del aprendiz',
+  PRIMARY KEY (`apre_id`),
+  UNIQUE INDEX `apre_documento_UNIQUE` (`apre_documento` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
