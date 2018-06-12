@@ -2,9 +2,9 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-      <img src="<?php echo base_url(); ?>/plantilla/dist/img/bk.webp" alt="BanKey" class="brand-image img-circle elevation-3"
+      <img src="<?php echo base_url(); ?>/plantilla/dist/img/bk.webp" alt="adsi" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">BanKey 1.0</span>
+      <span class="brand-text font-weight-light">adsi 1.0</span>
     </a>
 
     <!-- Sidebar -->
