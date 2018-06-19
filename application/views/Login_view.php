@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link id="ico" href="<?php echo base_url(); ?>/assets/dist/img/bankey.png" rel="shortcut icon" type="image/vnd.microsoft.icon" />
-    <script type="text/javascript" src="<?php echo base_url('assets/js/jquery-3.1.0.min.js'); ?>" type="text/javascript"></script>
-    <script type="text/javascript" src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
-    <script src=" <?php echo base_url('assets/js/bootstrap-notify.min.js') ?>"></script>
+    <link id="ico" href="<?php echo base_url(); ?>/plantilla/dist/img/bankey.png" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+    <script type="text/javascript" src="<?php echo base_url('plantilla/js/jquery-3.1.0.min.js'); ?>" type="text/javascript"></script>
+    <script type="text/javascript" src="<?php echo base_url('plantilla/js/bootstrap.min.js'); ?>"></script>
+    <script src=" <?php echo base_url('plantilla/js/bootstrap-notify.min.js') ?>"></script>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Bankey 1.0 | Login</title>
@@ -16,16 +16,16 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="<?php echo base_url();?>/assets/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>/plantilla/dist/css/adminlte.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="<?php echo base_url();?>/assets/plugins/iCheck/square/blue.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>/plantilla/plugins/iCheck/square/blue.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
   <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="login"><img style="margin-bottom: -58px;margin-top: 40px;" src="<?php echo base_url(); ?>/assets/dist/img/bankey.png"></a>
+    <a href="login"><img style="margin-bottom: -58px;margin-top: 40px;" src="<?php echo base_url(); ?>/plantilla/dist/img/bankey.png"></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -67,11 +67,11 @@
 <!-- /.login-box -->
 
 <!-- jQuery -->
-<script src="<?php echo base_url(); ?>assets/plugins/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>plantilla/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="<?php echo base_url(); ?>assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo base_url(); ?>plantilla/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- iCheck -->
-<script src="<?php echo base_url(); ?>assets/plugins/iCheck/icheck.min.js"></script>
+<script src="<?php echo base_url(); ?>plantilla/plugins/iCheck/icheck.min.js"></script>
 <script>
   $(function () {
     $('input').iCheck({
