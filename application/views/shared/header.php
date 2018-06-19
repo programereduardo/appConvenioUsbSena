@@ -34,6 +34,18 @@
         $.getScript('<?php echo base_url(); ?>js/shared/helper.js');
     </script>
     
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/jquery.growl.js" type="text/javascript"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/jquery.bootstrap-growl.js" type="text/javascript"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/bootbox.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/bootstrap-notify.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/jquery.autocomplete.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/jquery.base64.js" type="text/javascript"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/daterangepicker.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/loading.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/Chart/Chart.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/Chart/Chart.bundle.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>plantilla/js/Chart/utils.js"></script>
 </head>
 
 
